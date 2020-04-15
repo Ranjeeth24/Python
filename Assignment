@@ -1,75 +1,230 @@
-import numpy as np,pandas as pd,matplotlib.pyplot as plt
+##importing all the modules
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from datetime import datetime
 import scipy.stats
 import seaborn as sns
 
-## importing a csv file into 
-x=pd.read_csv('Sales.csv')
 
-## craeting pandas dataframe
-df=pd.DataFrame({'S.no':[1,2,3,4,5],'Date':['24-11-2005','6-9-2006','3-12-2007','6-8-2008','10-10-2009'],'India_income':[12.85,20.00,22.50,26.70,28.20],
+##importing a csv file into 
+x=pd.read_csv('Income_a.csv')
+
+
+##creating a dataframe
+df= pd.DataFrame({'S.no':[1,2,3,4,5],'Date':['24-11-2005','6-9-2006','3-12-2007','6-8-2008','10-10-2009'],'India_income':[12.85,20.00,22.50,26.70,28.20],
    'China_income':[15.5,17.2,19.0,20.8,23.0],'Tokyo_income':[10.0,11.8,13.5,10.2,9.0],'Kenya_income':[8.0,9.7,11.8,13.0,13.9]})
 print(df)
 
-## converting date column to datetime
+
+##converting date field to datetime
 #updated_time= datetime.datetime.strftime()
 df['Date']=pd.to_datetime(df['Date'])
 df.info()
 
-## creating stats from the above dataframe
-#c=b.max('India')
-#b['India_income'].max()
+
+##creating stats from the above created dataframe
 c=df[['India_income','China_income','Tokyo_income','Kenya_income']].max() ##max of all income columns
-print(c)
+print('Maximum:',c)
 d=df[['India_income','China_income','Tokyo_income','Kenya_income']].min() ##min of all income columns
-print(d)
+print('Minimum:',d)
 #e=b.max(axis=1)
 f=df[['India_income','China_income','Tokyo_income','Kenya_income']].mean() ## mean 
-print(f)
+print('Mean:',f)
 g=df[['India_income','China_income','Tokyo_income','Kenya_income']].std() ## std deviation 
-print(g)
-h=df[['India_income','China_income','Tokyo_income','Kenya_income']].var() ## variance of 
-print(h)
+print('Std deviation:',g)
+h=df[['India_income','China_income','Tokyo_income','Kenya_income']].var() ## variance  
+print('Variance:',h)
 i=df[['India_income','China_income','Tokyo_income','Kenya_income']].median() ##median
-print(i)
+print('Median:',i)
 j=df[['India_income','China_income','Tokyo_income','Kenya_income']].mode() ## mode
-print(j)
+print('Mode:',j)
 k=df[['India_income','China_income','Tokyo_income','Kenya_income']].quantile(0.1)  ##10th percentile
-print(k)
-l=df[['India_income','China_income','Tokyo_income','Kenya_income']].quantile(0.2)  ##10th percentile
-print(l)
+print('10th percentile:',k)
+l=df[['India_income','China_income','Tokyo_income','Kenya_income']].quantile(0.2)  ##20th percentile
+print('20th percentile:',l)
+m=df[['India_income','China_income','Tokyo_income','Kenya_income']].quantile(0.25)  ##1st quartile
+print('1st quartile:',m)
+n=df[['India_income','China_income','Tokyo_income','Kenya_income']].quantile(0.5)  ##2nd quartile
+print('2nd quartile:',n)
+o=df[['India_income','China_income','Tokyo_income','Kenya_income']].quantile(0.75)  ##3rd quartile
+print('3rd quartile:',o)
+r=o-m  #intequartile range(IQR) (difference between 1st and 3rd quartiles)
+print('IQR:',r)
 #n=b[['India_income','China_income','Tokyo_income','Kenya_income']].percentile(10,interpolation='midpoint')
 #print(n)
-o=df[['India_income','China_income','Tokyo_income','Kenya_income']].skew()  ##finding skewness
-print(o)
-p=df[['India_income','China_income','Tokyo_income','Kenya_income']].kurt()  ##finding kurtosis
-print(p)
+p=df[['India_income','China_income','Tokyo_income','Kenya_income']].skew()  ##finding skewness
+print('Skewness:',p)
+q=df[['India_income','China_income','Tokyo_income','Kenya_income']].kurt()  ##finding kurtosis
+print('Kurtosis:',q)
+
 
 ## finding Pearson correlation matrix and Spearman’s Rank correlation matrix 
 #seed(1)
-#data1=randn(1000)
-data1 =  np.random.random(1000)
-data2 =  data1 +( np.random.random(1000) )
+import numpy as np
+import scipy.stats
+import matplotlib.pyplot as plt
+pc=df.corr(method='pearson')
+print('Pearson correlation matrix', pc)
+sc=df.corr(method='spearman')
+print('Spearman’s Rank correlation matrix', sc)
 
-print('data1: mean=%f stdv=%f' % (np.mean(data1), np.std(data1)))
-print('data2: mean=%f stdv=%f' % (np.mean(data2), np.std(data2)))
-a=scipy.stats.pearsonr(data1,data2)[0]
-b=scipy.stats.spearmanr(data1,data2)[0]
-print( a)
-print(b)
-#pyplot.scatter(data1,datta2)
-plt.scatter(data1,data2)
-#pyplot.show()
+
+##graphs using plotly
+#prices of radio item for all years using bar plot
+df=pd.read_csv('Income_a.csv')
+tick_label=(2005,2006,2007,2008,2009,2010,2011,2012)
+plt.bar(df['RADIO_ITEM'],df['RADIO_PRICES'],tick_label=tick_label,width=0.5,color=['red','green'])
+plt.xlabel("RADIO_ITEM")
+plt.ylabel("RADIO_PRICES")
 plt.show()
 
-## graphs using plotly 
-x=[12.85,20,22.5,26.7,28.2]
-y=[15.5,17.2,19,20.8,23]
-plt.bar(x,y,width=0.5,color=['red','green'])
-plt.xlabel('India_income')
-plt.ylabel('China_income')
-#b.plt.bar()
+#prices of TV item for all years using bar plot
+df=pd.read_csv('Income_a.csv')
+tick_label=(2005,2006,2007,2008,2009,2010,2011,2012)
+plt.bar(df['TV_ITEM'],df['TV_PRICES'],tick_label=tick_label,width=0.5,color=['red','green'])
+plt.xlabel("TV_ITEM")
+plt.ylabel("TV_PRICES")
 plt.show()
 
-## seaborne pairplot
+#prices of TV item for all years using line plot
+df=pd.read_csv('Income_a.csv')
+plt.plot(df['TV_ITEM'],df['TV_PRICES'],color='green')
+plt.xlabel("TV_ITEM")
+plt.ylabel("TV_PRICES")
+plt.show()
+
+#prices of radio item for all years using line plot
+df=pd.read_csv('Income_a.csv')
+plt.plot(df['RADIO_ITEM'],df['RADIO_PRICES'],color='green')
+plt.xlabel("RADIO_ITEM")
+plt.ylabel("RADIO_PRICES")
+plt.show()
+
+#detected items of TV for different locations using bar plot
+df=pd.read_csv('Income_a.csv')
+tick_label=('Footscray','Brooklyn','Braybrook','Napier st','Kingsville','Kings st','Falcon st','Para st')
+plt.bar(df['TV_ITEM'],df['TVDETECTED_ITEMS'],tick_label=tick_label,width=0.5,color=['red','green'])
+plt.xlabel("TV_ITEM")
+plt.ylabel("TVDETECTED_ITEMS")
+plt.show()
+
+#detected items of Radio for different locations using bar plot
+df=pd.read_csv('Income_a.csv')
+tick_label=('Footscray','Brooklyn','Braybrook','Napier st','Kingsville','Kings st','Falcon st','Para st')
+plt.bar(df['RADIO_ITEM'],df['RADIODETECTED_ITEMS'],tick_label=tick_label,width=0.5,color=['red','green'])
+plt.xlabel("RADIO_ITEM")
+plt.ylabel("RADIODETECTED_ITEMS")
+plt.show()
+
+#detected items of Radio for different locations using line plot
+df=pd.read_csv('Income_a.csv')
+plt.plot(df['RADIO_ITEM'],df['RADIODETECTED_ITEMS'],color='green')
+plt.xlabel("RADIO_ITEM")
+plt.ylabel("RADIODETECTED_ITEMS")
+plt.show()
+
+##seaborne pairplot
+df= pd.DataFrame({'S.no':[1,2,3,4,5],'Date':['24-11-2005','6-9-2006','3-12-2007','6-8-2008','10-10-2009'],'India_income':[12.85,20.00,22.50,26.70,28.20],
+   'China_income':[15.5,17.2,19.0,20.8,23.0],'Tokyo_income':[10.0,11.8,13.5,10.2,9.0],'Kenya_income':[8.0,9.7,11.8,13.0,13.9]})
+
 z=sns.pairplot(data=df[['Date','India_income','China_income','Tokyo_income','Kenya_income']],hue='Date')
+
+##folium maps
+import folium
+map=folium.Map(location=[-37.813629,144.963058],zoom_start=15)
+folium.Marker([-37.813629,144.963058], popup='Melbourne',icon=folium.Icon(color='Red')).add_to(map)
+map
+
+#Adding polyline locations
+import folium
+map=folium.Map(location=[-37.813629,144.963058],zoom_start=15)
+folium.Marker([-37.813629,144.963058],popup='Melbourne').add_to(map)
+folium.Marker([-33.868820,151.209290],popup='Sydney').add_to(map)
+folium.PolyLine(locations=[(-37.813629,144.963058),(-33.868820,151.209290)],line_opacity=1.0).add_to(map)
+map
+
+#circular marker
+import folium
+map=folium.Map(location=[-37.813629,144.963058],zoom_start=15)
+folium.CircleMarker([-37.813629,144.963058],popup='Melbourne').add_to(map)
+map
+
+
+#Adding 5 city names as circle marker
+import numpy as np
+import pandas as pd
+import folium
+df=pd.read_csv('Income_a.csv')
+df.head()
+import folium
+import numpy as np
+import pandas as pd
+df=pd.read_csv('Income_a.csv')
+df.head()
+lat=-37.813629
+lang=144.963058
+folium.Map(location=[lat,lang],zoom_start=12)
+colors={'ES':'red','FS':'blue',
+       }
+melbourne_circle=folium.Map(location=[lat,lang],zoom_start=12)
+for lat,lng,num in zip(df.X,df.Y,range(1,df.shape[0])):
+    popup=folium.Popup(df['CITY_NAME'][num],parse_html=True)
+    folium.CircleMarker(
+                    [lat,lng],
+                    radius=6,
+                    color=colors[df.iloc[num,-1]],
+                    fill=True,
+                    fill_color=colors[df.iloc[num,-1]],
+                    fill_opacity=0.7,
+                    popup=popup
+            ).add_to(melbourne_circle)
+melbourne_circle
+
+#Clustering the map showing Average values
+import folium
+import numpy as np
+import pandas as pd
+df=pd.read_csv('Income_a.csv')
+df.head()
+lat=-37.813629
+lang=144.963058
+folium.Map(location=[lat,lang],zoom_start=12)
+colors={'FS':22.5,'ES':19.0,'FS':10.2,'ES':11.8,'ES':23,
+       }
+melbourne_cluster=folium.Map(location=[lat,lang],zoom_start=12)
+from folium import plugins
+cluster=plugins.MarkerCluster().add_to(melbourne_cluster)
+melbourne_Marker=folium.Map(location=[lat,lang],zoom_start=12)
+for lat,lng,num in zip(df.Y,df.X,range(1,df.shape[0])): 
+         popup = folium.Popup(df['CITY_NAME'][num], parse_html=True)
+         folium.Marker(
+                    [lat,lng],
+                    popup=popup,
+                    icon=folium.Icon(color=colors[df.iloc[num,-1]])
+            ).add_to(melbourne_cluster)
+melbourne_cluster
+
+#Map showing Average values as circle marker
+import folium
+import numpy as np
+import pandas as pd
+df=pd.read_csv('Income_a.csv')
+df.head()
+lat=-37.813629
+lang=144.963058
+folium.Map(location=[lat,lang],zoom_start=12)
+colors={'ES':[22.5,19.0,10.2,11.8],'FS':[22.5,19.0,10.2,11.8]    }
+melbourne_circle=folium.Map(location=[lat,lang],zoom_start=12)
+for lat,lng,num in zip(df.X,df.Y,range(1,df.shape[0])):
+    popup=folium.Popup(df['AVG_INCOME'][num],parse_html=True)
+    folium.CircleMarker(
+                    [lat,lng],
+                    radius=15,
+                    color=colors[df.iloc[num,-1]],
+                    fill=True,
+                    fill_color=colors[df.iloc[num,-1]],
+                    fill_opacity=0.7,
+                    popup=popup
+            ).add_to(melbourne_circle)
+melbourne_circle
